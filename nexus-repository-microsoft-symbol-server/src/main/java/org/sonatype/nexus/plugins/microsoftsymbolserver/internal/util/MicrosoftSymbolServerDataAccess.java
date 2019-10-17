@@ -56,16 +56,16 @@ public class MicrosoftSymbolServerDataAccess
    * @return found component or null if not found
    */
   @Nullable
-  public Component findComponent(final StorageTx tx,
+  public static Component findComponent(final StorageTx tx,
                                  final Repository repository,
-                                 final String arch,
+                                 final String group,
                                  final String name,
                                  final String version)
   {
     Iterable<Component> components = tx.findComponents(
         Query.builder()
             .where(P_NAME).eq(name)
-            .and(P_GROUP).eq(arch)
+            .and(P_GROUP).eq(group)
             .and(P_VERSION).eq(version)
             .build(),
         singletonList(repository)

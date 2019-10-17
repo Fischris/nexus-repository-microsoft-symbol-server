@@ -31,7 +31,7 @@ public class MicrosoftSymbolServerITSupport
   @Rule
   public RepositoryRuleMicrosoftSymbolServer repos = new RepositoryRuleMicrosoftSymbolServer(() -> repositoryManager);
 
-  @Override
+  //@Override doesn't override?!
   protected RepositoryRuleMicrosoftSymbolServer createRepositoryRule() {
     return new RepositoryRuleMicrosoftSymbolServer(() -> repositoryManager);
   }
@@ -46,11 +46,26 @@ public class MicrosoftSymbolServerITSupport
     return microsoftSymbolServerClient(repositoryBaseUrl(repository));
   }
 
+
   protected MicrosoftSymbolServerClient microsoftSymbolServerClient(final URL repositoryUrl) throws Exception {
     return new MicrosoftSymbolServerClient(
         clientBuilder(repositoryUrl).build(),
         clientContext(),
         repositoryUrl.toURI()
+    );
+  }
+
+  @Nonnull
+  protected MicrosoftSymbolServerHostedClient microsoftSymbolServerHostedClient(final Repository repository) throws Exception {
+    checkNotNull(repository);
+    return microsoftSymbolServerHostedClient(repositoryBaseUrl(repository));
+  }
+
+  protected MicrosoftSymbolServerHostedClient microsoftSymbolServerHostedClient(final URL repositoryUrl) throws Exception {
+    return new MicrosoftSymbolServerHostedClient(
+            clientBuilder(repositoryUrl).build(),
+            clientContext(),
+            repositoryUrl.toURI()
     );
   }
 }

@@ -87,7 +87,7 @@ All released versions can be found [here](https://github.com/sonatype-nexus-comm
 | Feature | Implemented          |
 |---------|----------------------|
 | Proxy   | :heavy_check_mark: * |
-| Hosted  |                      |
+| Hosted  | :heavy_check_mark: * |
 | Group   |                      |
 
 `* tested VERY lightly`

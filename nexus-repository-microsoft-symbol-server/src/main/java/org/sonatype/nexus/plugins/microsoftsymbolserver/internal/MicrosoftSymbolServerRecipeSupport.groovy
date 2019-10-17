@@ -12,6 +12,11 @@
  */
 package org.sonatype.nexus.plugins.microsoftsymbolserver.internal
 
+import org.sonatype.nexus.plugins.microsoftsymbolserver.internal.hosted.MicrosoftSymbolServerContentFacetImpl
+import org.sonatype.nexus.plugins.microsoftsymbolserver.internal.hosted.MicrosoftSymbolServerContentHandler
+import org.sonatype.nexus.repository.view.handlers.IndexHtmlForwardHandler
+import org.sonatype.nexus.repository.view.handlers.LastDownloadedHandler
+
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -27,7 +32,6 @@ import org.sonatype.nexus.repository.httpclient.HttpClientFacet
 import org.sonatype.nexus.repository.purge.PurgeUnusedFacet
 import org.sonatype.nexus.repository.search.SearchFacet
 import org.sonatype.nexus.repository.security.SecurityHandler
-import org.sonatype.nexus.repository.storage.DefaultComponentMaintenanceImpl
 import org.sonatype.nexus.repository.storage.StorageFacet
 import org.sonatype.nexus.repository.storage.UnitOfWorkHandler
 import org.sonatype.nexus.repository.view.ConfigurableViewFacet
@@ -42,10 +46,12 @@ import org.sonatype.nexus.repository.view.handlers.TimingHandler
 import org.sonatype.nexus.repository.view.matchers.ActionMatcher
 import org.sonatype.nexus.repository.view.matchers.logic.LogicMatchers
 import org.sonatype.nexus.repository.view.matchers.token.TokenMatcher
+import org.sonatype.nexus.plugins.microsoftsymbolserver.internal.hosted.MyComponentMaintenanceImpl;
 
 import static org.sonatype.nexus.plugins.microsoftsymbolserver.internal.util.MicrosoftSymbolServerPathUtils.*
 import static org.sonatype.nexus.repository.http.HttpMethods.GET
 import static org.sonatype.nexus.repository.http.HttpMethods.HEAD
+
 
 /**
  * Support for Microsoft Symbol Server recipes.
@@ -53,6 +59,21 @@ import static org.sonatype.nexus.repository.http.HttpMethods.HEAD
 abstract class MicrosoftSymbolServerRecipeSupport
     extends RecipeSupport
 {
+
+
+
+  @Inject
+  MicrosoftSymbolServerContentHandler mssContentHandler
+
+  @Inject
+  LastDownloadedHandler lastDownloadedHandler
+
+  @Inject
+  IndexHtmlForwardHandler indexHtmlForwardHandler
+
+  @Inject
+  Provider<MicrosoftSymbolServerContentFacetImpl> mssContentFacet
+
   @Inject
   Provider<MicrosoftSymbolServerSecurityFacet> securityFacet
 
@@ -96,7 +117,7 @@ abstract class MicrosoftSymbolServerRecipeSupport
   HandlerContributor handlerContributor
 
   @Inject
-  Provider<DefaultComponentMaintenanceImpl> componentMaintenanceFacet
+  Provider<MyComponentMaintenanceImpl> componentMaintenanceFacet
 
   @Inject
   Provider<HttpClientFacet> httpClientFacet
@@ -105,14 +126,12 @@ abstract class MicrosoftSymbolServerRecipeSupport
   Provider<PurgeUnusedFacet> purgeUnusedFacet
 
   @Inject
-  Provider<NegativeCacheFacet> negativeCacheFacet
-
-  @Inject
   NegativeCacheHandler negativeCacheHandler
 
   protected MicrosoftSymbolServerRecipeSupport(final Type type, final Format format) {
     super(type, format)
   }
+
 
   static Matcher pdbMatcher() {
     buildTokenMatcherForPatternAndAssetKind("/{path:.+}/{name:.+}${PDB}", AssetKind.PDB_FILE, GET, HEAD)
@@ -134,5 +153,7 @@ abstract class MicrosoftSymbolServerRecipeSupport
         }
     )
   }
+
+
 
 }

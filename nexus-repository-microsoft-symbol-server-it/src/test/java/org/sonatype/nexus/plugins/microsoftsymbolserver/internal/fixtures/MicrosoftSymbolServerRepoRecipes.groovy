@@ -34,5 +34,12 @@ trait MicrosoftSymbolServerRepoRecipes
     createRepository(createProxy(name, 'microsoft-symbol-server-proxy', remoteUrl))
   }
 
+  @Nonnull
+  Repository createMicrosoftSymbolServerHosted(final String name,
+                                              final String remoteUrl)
+  {
+    createRepository(createProxy(name, 'microsoft-symbol-server-hosted', remoteUrl))
+  }
+
   abstract Repository createRepository(final Configuration configuration)
 }
