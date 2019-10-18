@@ -11,7 +11,7 @@ import java.nio.ByteOrder;
 public class DataSearcher {
 
     //Fast one, just fetching needed data.
-    //There is also a bigger version available, which covers more data like the whole stream dir.
+    //I did also a bigger version, which covers more data like the whole stream dir.
 
 
 
