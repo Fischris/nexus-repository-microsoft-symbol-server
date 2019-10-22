@@ -12,11 +12,6 @@ public class DataSearcher {
 
     //Fast one, just fetching needed data.
     //I did also a bigger version, which covers more data like the whole stream dir.
-<<<<<<< HEAD
-=======
-
->>>>>>> 857159fdfb3ae362946709d351a6d0fa7d318b22
-
 
     // Check for Microsoft C/C++ MSF 7.00
 
